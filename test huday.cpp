@@ -17,6 +17,7 @@ int permutation(int n, int r) {
 
 int main()
 {
-    double a = permutation(4, 2);
+    string str = "4456";
+    int a = stoi(str2);
     cout << a << endl;
 }
