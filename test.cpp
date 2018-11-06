@@ -1,100 +1,50 @@
-#include<iostream>
-#include<list>
+#include <bits/stdc++.h>
 using namespace std;
 
-int n;
-string res = "";
-
-// Graph class represents a directed graph
-// using adjacency list representation
-class Graph
+// User defined class, Point
+class Point
 {
-    int V;    // No. of vertices
-
-    // Pointer to an array containing
-    // adjacency lists
-    list<int> *adj;
-
-    // A recursive function used by DFS
-    bool DFSUtil(int v, bool visited[]);
+   int x;
+   int y;
 public:
-    Graph(int V);   // Constructor
-
-    // function to add an edge to graph
-    void addEdge(int v, int w);
-
-    // DFS traversal of the vertices
-    // reachable from v
-    void DFS(int v);
+   Point(int _x, int _y)
+   {
+      x = _x;
+      y = _y;
+   }
+   int getX() const { return x; }
+   int getY() const { return y; }
 };
 
-Graph::Graph(int V)
+// To compare two points
+class myComparator
 {
-    this->V = V;
-    adj = new list<int>[V];
-}
-
-void Graph::addEdge(int v, int w)
-{
-    adj[v].push_back(w); // Add w to v’s list.
-    adj[w].push_back(v);
-}
-
-bool Graph::DFSUtil(int v, bool visited[])
-{
-    visited[v] = true;
-    //cout << v << " ";
-
-    list<int>::iterator i;
-    for (i = adj[v].begin(); i != adj[v].end(); ++i){
-        if(*i == n){
-            res += to_string(*i);
-            return true;
-        }
-        if (!visited[*i]){
-            bool check = DFSUtil(*i, visited);
-            if(check == true){
-                res += to_string(*i);
-                return true;
-            }
-        }
+public:
+    int operator() (const Point& p1, const Point& p2)
+    {
+        return p1.getX() > p2.getX();
     }
-    return 0;
-}
+};
 
-// DFS traversal of the vertices reachable from v.
-// It uses recursive DFSUtil()
-void Graph::DFS(int v)
+// Driver code
+int main ()
 {
-    // Mark all the vertices as not visited
-    bool *visited = new bool[V];
-    for (int i = 0; i < V; i++)
-        visited[i] = false;
+    // Creates a Min heap of points (order by x coordinate)
+    priority_queue <Point, vector<Point>, myComparator > pq;
 
-    // Call the recursive helper function
-    // to print DFS traversal
-    DFSUtil(v, visited);
-}
+    // Insert points into the min heap
+    pq.push(Point(10, 2));
+    pq.push(Point(2, 1));
+    pq.push(Point(1, 5));
 
-int main()
-{
-    // Create a graph given in the above diagram
-    cin >> n;
-    int ara[n+1];
-    for(int i = 2;i<=n;i++){
-        cin >> ara[i];
-    }
-    Graph g(n+1);
-    for(int i = 2;i<=n;i++){
-        g.addEdge(ara[i], i);
+    // One by one extract items from min heap
+    while (pq.empty() == false)
+    {
+        Point p = pq.top();
+        cout << "(" << p.getX() << ", " << p.getY() << ")";
+        cout << endl;
+        pq.pop();
     }
 
-    //cout << "Following is Depth First Traversal"
-            " (starting from vertex 2) \n";
-    g.DFS(1);
-    cout << "1 ";
-    for(int i = res.length()-1;i>=0;i--){
-        cout << res[i] << " ";
-    }
     return 0;
 }

@@ -1,80 +1,114 @@
-#include <iostream>
-#include <cstring>
-#define V 9
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int minimumVertex(int dist[], bool sptSet[]) {
-    int minimum = INT_MAX, minimumIndex;
-    for(int i = 0; i < V; i++) {
-        if(dist[i] < minimum && sptSet[i] == false){
-            minimum = dist[i];
-            minimumIndex = i;
-        }
-    }
-    return minimumIndex;
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
 }
 
-void printPath(int parent[], int u) {
-    int result[V];
-    int  index = 1;
-    result[0] = u;
+class MinHeap {
+    int *heapArray;
+    int heapSize;
+    int capacity;
+public:
+    MinHeap(int cap);
+    int parent(int i) {return (i-1) / 2;};
+    int left(int i) {return 2 * i + 1;};
+    int right(int i) {return 2 * i + 2;};
+    void insertKey(int val);
+    void MinHeapify(int i);
+    void decreaseKey(int i, int val);
+    void deleteKey(int i);
+    int extractMin();
+    int getMin();
+    void print();
+    bool isEmpty();
+};
 
-    while(parent[u] != -1) {
-        u = parent[u];
-        result[index++] = u;
-    }
-    for(int i = index - 1; i >= 0; i--) {
-        cout << result[i] << " ";
+bool MinHeap::isEmpty() {
+    return (heapSize==0);
+}
+
+void MinHeap::print() {
+    for(int i = 0; i < heapSize; i++) {
+        cout << heapArray[i] << " ";
     }
     cout << endl;
 }
 
-void printSolution(int dist[], int parent[]) {
-    cout << "Vertex Distance  Path" << endl;
-    for(int i = 0; i < V; i++) {
-        cout << i << "\t" << dist[i] << "\t";
-        printPath(parent, i);
+MinHeap::MinHeap(int cap) {
+    capacity = cap;
+    heapSize = 0;
+    heapArray = new int[capacity];
+}
+
+void MinHeap::insertKey(int val) {
+    if(heapSize == capacity) {
+        cout << "\nOverload" << endl;
+        return;
+    }
+    heapSize++;
+    int i = heapSize - 1;
+    heapArray[i] = val;
+    while(i != 0 && heapArray[parent(i)] > heapArray[i]) {
+        swap(&heapArray[parent(i)], &heapArray[i]);
+        i = parent(i);
     }
 }
 
-void dijkstra(int graph[V][V], int src) {
-    int dist[V];
-    bool sptSet[V];
-    int parent[V];
-    for(int i = 0; i < V; i++) {
-        dist[i] = INT_MAX;
-        sptSet[i] = false;
+void MinHeap::MinHeapify(int i) {
+    int l = left(i);
+    int r = right(i);
+    int smallest = i;
+    if(l < heapSize && heapArray[l] < heapArray[i]) {
+        smallest = l;
     }
+    if(r < heapSize && heapArray[r] < heapArray[smallest])
+        smallest = r;
 
-    dist[src] = 0;
-    parent[src] = -1;
-
-    for(int i = 0; i < V-1; i++) {
-        int u = minimumVertex(dist, sptSet);
-        sptSet[u] = true;
-        for(int v = 0; v < V; v++) {
-            if(graph[u][v] && sptSet[v] == false && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph[u][v];
-                parent[v] = u;
-            }
-        }
+    if(smallest != i) {
+        swap(&heapArray[i], &heapArray[smallest]);
+        MinHeapify(smallest);
     }
-    printSolution(dist, parent);
 }
+
+int MinHeap::extractMin() {
+    if(heapSize <= 0) {
+        cout << "Heap is already empty" << endl;
+        return INT_MAX;
+    }
+    if(heapSize == 1) {
+        heapSize--;
+        return heapArray[0];
+    }
+    int root = heapArray[0];
+    heapArray[0] = heapArray[heapSize - 1];
+    heapSize--;
+    MinHeapify(0);
+    return root;
+}
+
+void MinHeap::decreaseKey(int i, int new_val)
+{
+    heapArray[i] = new_val;
+    while (i != 0 && heapArray[parent(i)] > heapArray[i]) {
+        swap(&heapArray[i], &heapArray[parent(i)]);
+        i = parent(i);
+    }
+}
+
+void MinHeap::deleteKey(int i) {
+    decreaseKey(i, INT_MIN);
+    extractMin();
+}
+
+int MinHeap::getMin() {return heapArray[0];}
+
 
 int main () {
-    int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-                        {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                        {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                        {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                        {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                        {0, 0, 4, 14, 10, 0, 2, 0, 0},
-                        {0, 0, 0, 0, 0, 2, 0, 1, 6},
-                        {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                        {0, 0, 2, 0, 0, 0, 6, 7, 0}
-                      };
-    dijkstra(graph, 0);
+
 }
 
 
