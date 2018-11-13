@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <huday.h>
 
 #define INFINITE 99999
 
@@ -180,6 +181,7 @@ void addEdge(vector<pair<int, int>> adj[], int u, int v, int wt) {
 
 
 int main() {
+    /*
     int V = 9;
     vector<pair<int, int>> adj[V];
     addEdge(adj, 0, 1, 4);
@@ -198,7 +200,8 @@ int main() {
     addEdge(adj, 5, 4, 10);
 
     dijkstra(adj, V, 0);
-
+    */
+    foo();
 }
 
 
