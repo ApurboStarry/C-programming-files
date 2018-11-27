@@ -1,5 +1,4 @@
-#include <iostream>
-#include <cstring>
+#include <bits/stdc++.h>
 #define V 9
 
 using namespace std;
@@ -64,17 +63,16 @@ void dijkstra(int graph[V][V], int src) {
 }
 
 int main () {
-    int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-                        {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                        {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                        {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                        {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                        {0, 0, 4, 14, 10, 0, 2, 0, 0},
-                        {0, 0, 0, 0, 0, 2, 0, 1, 6},
-                        {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                        {0, 0, 2, 0, 0, 0, 6, 7, 0}
-                      };
-    dijkstra(graph, 0);
+    int n, m, a, b, w;
+    cin >> n >> m;
+    vector<pair<int, int>> graph(n);
+    for(int i = 0; i < m; i++) {
+        cin >> a >> b >> w;
+        graph[a].push_back(make_pair(b, w));
+    }
+
+
+    //dijkstra(graph, 0);
 }
 
 

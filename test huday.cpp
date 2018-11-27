@@ -19,16 +19,18 @@ void print(vector<pair<int, int>> adj[], int V) {
 
 int main()
 {
-    int V = 5;
-    vector<pair<int, int> > adj[V];
-    addEdge(adj, 0, 1, 10);
-    addEdge(adj, 0, 4, 20);
-    addEdge(adj, 1, 2, 30);
-    addEdge(adj, 1, 3, 40);
-    addEdge(adj, 1, 4, 50);
-    addEdge(adj, 2, 3, 60);
-    addEdge(adj, 3, 4, 70);
-    print(adj, V);
+    int n;
+    cin >> n;
+
+    int ara[n];
+
+    for(int i = 0; i < n; i++) {
+        cin >> ara[i];
+    }
+
+    for(int i = 0; i < n; i++) {
+        cout << ara[i] << endl;
+    }
 }
 
 
