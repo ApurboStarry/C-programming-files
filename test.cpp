@@ -45,8 +45,8 @@ int FloydWarshall(int graph[V][V], int n) {
             }
         }
     }
-    //printSolution(dist, n);
-    return summation(graph, n);
+    printSolution(dist, n);
+    return summation(dist, n);
 
     /*
     bool flag;
@@ -89,9 +89,9 @@ int main() {
 
     int result[n];
 
-    cout << FloydWarshall(graph, n) << endl;
+    //cout << FloydWarshall(graph, n) << endl;
 
-    /*
+
     for(int i = 0; i < n; i++) {
         result[i] = FloydWarshall(graph, n);
         for(int j = 0; j < n; j++) {
@@ -100,12 +100,20 @@ int main() {
         for(int j = 0; j < n; j++) {
             graph[j][nodes[i]] = 9999;
         }
+
+        cout << endl << "Resultant Graph after removing node " << nodes[i] << endl;
+        for(int j = 0; j < n; j++) {
+            for(int k = 0; k < n; k++) {
+                cout << graph[j][k] << " ";
+            }
+            cout << endl;
+        }
     }
 
     for(int i = 0; i < n; i++) {
         cout << result[i] << " ";
     }
-    */
+
 }
 
 
